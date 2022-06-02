@@ -1,0 +1,26 @@
+{
+  "name": "guided-tour-components",
+  "version": "0.0.0",
+  "files": [
+    "dist",
+    "vue-plugin.js"
+  ],
+  "main": "./dist/guided-tour-components.es.js",
+  "module": "./dist/guided-tour-components.es.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@bimdata/design-system": "^1.3.0",
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "sass": "^1.52.1",
+    "vite": "^2.9.9",
+    "vite-plugin-libcss": "^1.0.5"
+  }
+}
