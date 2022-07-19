@@ -108,81 +108,90 @@ function setArrow(arrow, position) {
     boxShadow: '5px 3px 0.9em, 0 0 rgba(0,0,0,0.5)',
   };
 
-  if (position === 'bottom') {
-    Object.assign(arrow.style, {
-      ...style,
-      left: 0,
-      right: 0,
-      bottom: 'calc(100% - 12px)',
-      backgroundColor: 'var(--color-silver-light)',
-    });
-  } else if (position === 'top') {
-    Object.assign(arrow.style, {
-      ...style,
-      left: 0,
-      right: 0,
-      bottom: '-12px',
-      backgroundColor: 'var(--color-white)',
-    });
-  } else if (position === 'up-left') {
-    Object.assign(arrow.style, {
-      ...style,
-      right: '-12px',
-      top: '-176px',
-      bottom: 0,
-      backgroundColor: 'var(--color-silver-light)',
-    });
-  } else if (position === 'up-right') {
-    Object.assign(arrow.style, {
-      ...style,
-      left: '-12px',
-      top: '-176px',
-      bottom: 0,
-      backgroundColor: 'var(--color-silver-light)',
-    });
-  } else if (position === 'down-left') {
-    Object.assign(arrow.style, {
-      ...style,
-      right: '-12px',
-      top: '150px',
-      bottom: '0px',
-      backgroundColor: 'var(--color-white)',
-    });
-  } else if (position === 'down-right') {
-    Object.assign(arrow.style, {
-      ...style,
-      left: '-12px',
-      top: '150px',
-      bottom: '0px',
-      backgroundColor: 'var(--color-white)',
-    });
+  let styleCompleted;
+
+  switch (position) {
+    case 'bottom':
+      styleCompleted = {
+        ...style,
+        left: 0,
+        right: 0,
+        bottom: 'calc(100% - 12px)',
+        backgroundColor: 'var(--color-silver-light)',
+      };
+      break;
+    case 'top':
+      styleCompleted = {
+        ...style,
+        left: 0,
+        right: 0,
+        bottom: '-12px',
+        backgroundColor: 'var(--color-white)',
+      };
+      break;
+    case 'up-left':
+      styleCompleted = {
+        ...style,
+        right: '-12px',
+        top: '-176px',
+        bottom: 0,
+        backgroundColor: 'var(--color-silver-light)',
+      };
+      break;
+    case 'up-right':
+      styleCompleted = {
+        ...style,
+        left: '-12px',
+        top: '-176px',
+        bottom: 0,
+        backgroundColor: 'var(--color-silver-light)',
+      };
+      break;
+    case 'down-left':
+      styleCompleted = {
+        ...style,
+        right: '-12px',
+        top: '150px',
+        bottom: '0px',
+        backgroundColor: 'var(--color-white)',
+      };
+      break;
+    case 'down-right':
+      styleCompleted = {
+        ...style,
+        left: '-12px',
+        top: '150px',
+        bottom: '0px',
+        backgroundColor: 'var(--color-white)',
+      };
   }
+  Object.assign(arrow.style, styleCompleted);
 }
 
 function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
-  const { x: xTarget, y: yTarget, w: wTarget, h: hTarget } = getElementCoord(target);
+  const { x: xTarget, y: yTarget, w: targetWidth, h: targetHeight } = getElementCoord(target);
 
-  const { w: wTooltip, h: hTooltip } = getElementCoord(tooltip);
+  const { w: tooltipWidth, h: tooltipHeight } = getElementCoord(tooltip);
   const { wWindow, hWindow } = getWindowSize();
   const { offsetXWindow, offsetYWindow } = getWindowScroll();
 
   let left, top;
 
   const targetLeft = offsetXWindow + xTarget;
-  const tooltipWidth = wTooltip + tooltipGap;
+  const tooltipTotalWidth = tooltipWidth + tooltipGap;
 
   const targetTop = offsetYWindow + yTarget;
-  const tooltipHeight = hTooltip + tooltipGap;
+  const tooltipTotalHeight = tooltipHeight + tooltipGap;
 
-  const tooltipFitRight = wWindow - (targetLeft + wTarget) > tooltipWidth;
-  const tooltipFitLeft = targetLeft > tooltipWidth;
+  const tooltipFitRight = wWindow - (targetLeft + targetWidth) > tooltipTotalWidth;
+  const tooltipFitLeft = targetLeft > tooltipTotalWidth;
 
   if (tooltipFitRight) {
-    left = targetLeft + wTarget + tooltipGap;
+    left = targetLeft + targetWidth + tooltipGap;
 
     // align bottom
-    if (hWindow - targetTop - hTarget < tooltipHeight - hTarget) {
-      top = targetTop + hTarget - hTooltip;
+    if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
+      top = targetTop + targetHeight - tooltipHeight;
       setArrow(arrow, 'down-right');
       // align top
     } else {
@@ -198,11 +207,11 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   }
 
   if (tooltipFitLeft) {
-    left = targetLeft - tooltipWidth;
+    left = targetLeft - tooltipTotalWidth;
 
     // align bottom
-    if (hWindow - targetTop - hTarget < tooltipHeight - hTarget) {
-      top = targetTop + hTarget - hTooltip;
+    if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
+      top = targetTop + targetHeight - tooltipHeight;
       setArrow(arrow, 'down-left');
       // align top
     } else {
@@ -216,14 +225,14 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
     return;
   }
 
-  const tooltipFitTop = tooltipHeight < targetTop - tooltipGap;
-  const tooltipFitBottom = hWindow - (targetTop + hTarget) > tooltipHeight;
+  const tooltipFitTop = tooltipTotalHeight < targetTop - tooltipGap;
+  const tooltipFitBottom = hWindow - (targetTop + targetHeight) > tooltipTotalHeight;
 
   if (tooltipFitTop) {
     setArrow(arrow, 'top');
     Object.assign(tooltip.style, {
       left: `${targetLeft + xOffset}px`,
-      top: `${targetTop - tooltipHeight + yOffset}px`,
+      top: `${targetTop - tooltipTotalHeight + yOffset}px`,
     });
     return;
   }
@@ -232,15 +241,15 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
     setArrow(arrow, 'bottom');
     Object.assign(tooltip.style, {
       left: `${targetLeft + xOffset}px`,
-      top: `${targetTop + hTarget + tooltipGap + yOffset}px`,
+      top: `${targetTop + targetHeight + tooltipGap + yOffset}px`,
     });
     return;
   }
 
   // tooltip in element
   Object.assign(tooltip.style, {
-    left: `${targetLeft + wTarget - wTooltip + xOffset}px`,
-    top: `${targetTop + hTarget - hTooltip + yOffset}px`,
+    left: `${targetLeft + targetWidth - tooltipWidth + xOffset}px`,
+    top: `${targetTop + targetHeight - tooltipHeight + yOffset}px`,
   });
 }
 
