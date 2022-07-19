@@ -15,6 +15,7 @@
         transition: `opacity ${transitionDuration}s ease-in-out`,
       }"
     >
+      <div ref="arrow"></div>
       <div class="tooltip__box">
         <div class="tooltip__box__top">
           <div
@@ -47,7 +48,11 @@
           </div>
         </div>
         <div class="tooltip__box__footer">
-          <template v-if="isStepIntro">
+          <div class="tooltip__box__footer__step-counter">
+            <span>{{ stepIndex + 1 }}</span>
+            <span>/{{ steps.length }}</span>
+          </div>
+          <template v-if="!isStepOutro">
             <div class="tooltip__box__footer__btn-skip">
               <BIMDataButton
                 width="0px"
@@ -62,10 +67,6 @@
           <template v-else>
             <div class="tooltip__box__footer__ghost-element"></div>
           </template>
-          <div class="tooltip__box__footer__step-counter">
-            <span>{{ stepIndex + 1 }}</span>
-            <span>/{{ steps.length }}</span>
-          </div>
           <template v-if="isStepOutro">
             <div class="tooltip__box__footer__btn-start">
               <BIMDataButton
@@ -91,7 +92,7 @@
                 <span> {{translate("next")}}</span>
                 <BIMDataIcon
                   name="chevron"
-                  size="xs"
+                  size="xxs"
                   fill
                   color="white"
                 />
@@ -192,7 +193,13 @@ export default {
         }
 
         scrollToTarget(this.currentTarget.element, this.elementToObserve);
-        setTooltipPosition(this.currentTarget.element, this.$refs.tooltip);
+        setTooltipPosition(
+          this.currentTarget.element,
+          this.$refs.tooltip,
+          this.$refs.arrow,
+          step.yOffset,
+          step.xOffset
+        );
 
         this.showTooltip = true;
       } catch {
@@ -273,6 +280,7 @@ export default {
     },
     next() {
       this.stepIndex++;
+      this.$refs.arrow.style = null;
     },
     close() {
       this.showTooltip = false;
