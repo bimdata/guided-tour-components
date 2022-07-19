@@ -124,7 +124,7 @@ function setArrow(arrow, position) {
       bottom: '-12px',
       backgroundColor: 'var(--color-white)',
     });
-  } else if (position === 'sup-left') {
+  } else if (position === 'up-left') {
     Object.assign(arrow.style, {
       ...style,
       right: '-12px',
@@ -132,8 +132,7 @@ function setArrow(arrow, position) {
       bottom: 0,
       backgroundColor: 'var(--color-silver-light)',
     });
-  } else if (position === 'sup-right') {
-    console.log('dans le suppRight');
+  } else if (position === 'up-right') {
     Object.assign(arrow.style, {
       ...style,
       left: '-12px',
@@ -188,7 +187,7 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
       // align top
     } else {
       top = topTarget;
-      setArrow(arrow, 'sup-right');
+      setArrow(arrow, 'up-right');
     }
 
     Object.assign(tooltip.style, {
@@ -208,7 +207,7 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
       // align top
     } else {
       top = topTarget;
-      setArrow(arrow, 'sup-left');
+      setArrow(arrow, 'up-left');
     }
     Object.assign(tooltip.style, {
       left: `${left + xOffset}px`,
