@@ -162,31 +162,31 @@ function setArrow(arrow, position) {
 function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   const { x: xTarget, y: yTarget, w: wTarget, h: hTarget } = getElementCoord(target);
 
-  const { w: wToolTip, h: hTooltip } = getElementCoord(tooltip);
+  const { w: wTooltip, h: hTooltip } = getElementCoord(tooltip);
   const { wWindow, hWindow } = getWindowSize();
   const { offsetXWindow, offsetYWindow } = getWindowScroll();
 
   let left, top;
 
-  const leftTarget = offsetXWindow + xTarget;
-  const wideTooltip = wToolTip + tooltipGap;
+  const targetLeft = offsetXWindow + xTarget;
+  const tooltipWidth = wTooltip + tooltipGap;
 
-  const topTarget = offsetYWindow + yTarget;
-  const highTooltip = hTooltip + tooltipGap;
+  const targetTop = offsetYWindow + yTarget;
+  const tooltipHeight = hTooltip + tooltipGap;
 
-  const tooltipFitRight = wWindow - (leftTarget + wTarget) > wideTooltip;
-  const tooltipFitLeft = leftTarget > wideTooltip;
+  const tooltipFitRight = wWindow - (targetLeft + wTarget) > tooltipWidth;
+  const tooltipFitLeft = targetLeft > tooltipWidth;
 
   if (tooltipFitRight) {
-    left = leftTarget + wTarget + tooltipGap;
+    left = targetLeft + wTarget + tooltipGap;
 
     // align bottom
-    if (hWindow - topTarget - hTarget < highTooltip - hTarget) {
-      top = topTarget + hTarget - hTooltip;
+    if (hWindow - targetTop - hTarget < tooltipHeight - hTarget) {
+      top = targetTop + hTarget - hTooltip;
       setArrow(arrow, 'down-right');
       // align top
     } else {
-      top = topTarget;
+      top = targetTop;
       setArrow(arrow, 'up-right');
     }
 
@@ -198,15 +198,15 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   }
 
   if (tooltipFitLeft) {
-    left = leftTarget - wideTooltip;
+    left = targetLeft - tooltipWidth;
 
     // align bottom
-    if (hWindow - topTarget - hTarget < highTooltip - hTarget) {
-      top = topTarget + hTarget - hTooltip;
+    if (hWindow - targetTop - hTarget < tooltipHeight - hTarget) {
+      top = targetTop + hTarget - hTooltip;
       setArrow(arrow, 'down-left');
       // align top
     } else {
-      top = topTarget;
+      top = targetTop;
       setArrow(arrow, 'up-left');
     }
     Object.assign(tooltip.style, {
@@ -216,14 +216,14 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
     return;
   }
 
-  const tooltipFitTop = highTooltip < topTarget - tooltipGap;
-  const tooltipFitBottom = hWindow - (topTarget + hTarget) > highTooltip;
+  const tooltipFitTop = tooltipHeight < targetTop - tooltipGap;
+  const tooltipFitBottom = hWindow - (targetTop + hTarget) > tooltipHeight;
 
   if (tooltipFitTop) {
     setArrow(arrow, 'top');
     Object.assign(tooltip.style, {
-      left: `${leftTarget + xOffset}px`,
-      top: `${topTarget - highTooltip + yOffset}px`,
+      left: `${targetLeft + xOffset}px`,
+      top: `${targetTop - tooltipHeight + yOffset}px`,
     });
     return;
   }
@@ -231,16 +231,16 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   if (tooltipFitBottom) {
     setArrow(arrow, 'bottom');
     Object.assign(tooltip.style, {
-      left: `${leftTarget + xOffset}px`,
-      top: `${topTarget + hTarget + tooltipGap + yOffset}px`,
+      left: `${targetLeft + xOffset}px`,
+      top: `${targetTop + hTarget + tooltipGap + yOffset}px`,
     });
     return;
   }
 
   // tooltip in element
   Object.assign(tooltip.style, {
-    left: `${leftTarget + wTarget - wToolTip + xOffset}px`,
-    top: `${topTarget + hTarget - hTooltip + yOffset}px`,
+    left: `${targetLeft + wTarget - wTooltip + xOffset}px`,
+    top: `${targetTop + hTarget - hTooltip + yOffset}px`,
   });
 }
 
