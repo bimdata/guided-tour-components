@@ -108,11 +108,11 @@ function setArrow(arrow, position) {
     boxShadow: '5px 3px 0.9em, 0 0 rgba(0,0,0,0.5)',
   };
 
-  let styleCompleted;
+  let completedStyle;
 
   switch (position) {
     case 'bottom':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         left: 0,
         right: 0,
@@ -121,7 +121,7 @@ function setArrow(arrow, position) {
       };
       break;
     case 'top':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         left: 0,
         right: 0,
@@ -130,7 +130,7 @@ function setArrow(arrow, position) {
       };
       break;
     case 'up-left':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         right: '-12px',
         top: '-176px',
@@ -139,7 +139,7 @@ function setArrow(arrow, position) {
       };
       break;
     case 'up-right':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         left: '-12px',
         top: '-176px',
@@ -148,7 +148,7 @@ function setArrow(arrow, position) {
       };
       break;
     case 'down-left':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         right: '-12px',
         top: '150px',
@@ -157,7 +157,7 @@ function setArrow(arrow, position) {
       };
       break;
     case 'down-right':
-      styleCompleted = {
+      completedStyle = {
         ...style,
         left: '-12px',
         top: '150px',
@@ -165,7 +165,7 @@ function setArrow(arrow, position) {
         backgroundColor: 'var(--color-white)',
       };
   }
-  Object.assign(arrow.style, styleCompleted);
+  Object.assign(arrow.style, completedStyle);
 }
 
 function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
