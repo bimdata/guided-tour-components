@@ -15,7 +15,11 @@
         transition: `opacity ${transitionDuration}s ease-in-out`,
       }"
     >
-      <div ref="arrow"></div>
+      <div
+        ref="arrow"
+        class="arrow"
+        data-postion="bottom"
+      ></div>
       <div class="tooltip__box">
         <div class="tooltip__box__top">
           <div
@@ -280,7 +284,6 @@ export default {
     },
     next() {
       this.stepIndex++;
-      this.$refs.arrow.style = null;
     },
     close() {
       this.showTooltip = false;
