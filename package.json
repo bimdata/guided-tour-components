@@ -11,7 +11,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@bimdata/design-system": "^1.3.0",
