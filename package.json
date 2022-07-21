@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/guided-tour-components",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.1",
   "files": [
     "dist",
     "vue-plugin.js"
@@ -11,7 +11,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@bimdata/design-system": "^1.4.0-rc.21",
