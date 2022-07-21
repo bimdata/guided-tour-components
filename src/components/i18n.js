@@ -1,11 +1,13 @@
 const en = {
-  skip: "Skip",
-  continue: "Continue",
+  skip: 'Skip',
+  next: 'Next',
+  continue: 'Continue',
 };
 
 const fr = {
-  skip: "Passer",
-  continue: "Continuer",
+  skip: 'Passer',
+  next: 'Suivant',
+  continue: 'Continuer',
 };
 
 const trads = {

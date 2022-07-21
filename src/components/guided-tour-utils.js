@@ -2,10 +2,8 @@
  * Parameters
  */
 
-// Spotlight padding (in px)
-const spotPadding = 16;
 // Tooltip gap (in px)
-const tooltipGap = 13;
+const tooltipGap = 25;
 
 /**
  * Internal utility functions
@@ -14,18 +12,11 @@ const tooltipGap = 13;
 function getElementCoord(elem) {
   let x, y, w, h;
 
-  console.log({elem})
-
   if (Array.isArray(elem)) {
     let widestXW, highestYH;
 
     elem.map(e => {
-      const {
-        x: currentX,
-        y: currentY,
-        width: currentW,
-        height: currentH,
-      } = e.getBoundingClientRect();
+      const { x: currentX, y: currentY, width: currentW, height: currentH } = e.getBoundingClientRect();
 
       if (!widestXW || widestXW < currentX + currentW) {
         widestXW = currentX + currentW;
@@ -47,13 +38,7 @@ function getElementCoord(elem) {
       h = highestYH - y;
     });
   } else {
-    console.log({elem});
-    const {
-      x: currentX,
-      y: currentY,
-      width: currentW,
-      height: currentH,
-    } = elem.getBoundingClientRect();
+    const { x: currentX, y: currentY, width: currentW, height: currentH } = elem.getBoundingClientRect();
 
     x = currentX;
     y = currentY;
@@ -95,115 +80,107 @@ async function scrollToTarget(target, element) {
 
   if (isNegative(y)) {
     element.scroll({
-      top: scrolledTop + y - spotPadding - tooltipGap,
+      top: scrolledTop + y - tooltipGap,
     });
   }
 
   if (y < offsetYElement) {
     element.scroll({
-      top: scrolledTop + y - offsetYElement - spotPadding - tooltipGap,
+      top: scrolledTop + y - offsetYElement - tooltipGap,
     });
   }
 
   if (y + h > hWindow) {
     element.scroll({
-      top: y + h - hWindow + scrolledTop + spotPadding + tooltipGap,
+      top: y + h - hWindow + scrolledTop + tooltipGap,
     });
   }
 }
 
-function setSpotlightPosition(target, spotlight) {
-  const { x, y, w, h } = getElementCoord(target);
-  const { offsetXWindow, offsetYWindow } = getWindowScroll();
+function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
+  const { x: xTarget, y: yTarget, w: targetWidth, h: targetHeight } = getElementCoord(target);
 
-  Object.assign(spotlight.style, {
-    left: `${offsetXWindow + x - spotPadding}px`,
-    top: `${offsetYWindow + y - spotPadding}px`,
-    width: `${w + 2 * spotPadding}px`,
-    height: `${h + 2 * spotPadding}px`,
-  });
-}
-
-function setTooltipPosition(target, tooltip) {
-  const { x: xTarget, y: yTarget, w: wTarget, h: hTarget } = getElementCoord(
-    target
-  );
-
-  const { w: wToolTip, h: hTooltip } = getElementCoord(tooltip);
+  const { w: tooltipWidth, h: tooltipHeight } = getElementCoord(tooltip);
   const { wWindow, hWindow } = getWindowSize();
   const { offsetXWindow, offsetYWindow } = getWindowScroll();
 
   let left, top;
 
-  const leftTarget = offsetXWindow + xTarget;
-  const wideTooltip = wToolTip + tooltipGap;
+  const targetLeft = offsetXWindow + xTarget;
+  const tooltipTotalWidth = tooltipWidth + tooltipGap;
 
-  const topTarget = offsetYWindow + yTarget;
-  const highTarget = hTarget + spotPadding;
-  const highTooltip = hTooltip + tooltipGap;
+  const targetTop = offsetYWindow + yTarget;
+  const tooltipTotalHeight = tooltipHeight + tooltipGap;
 
-  const tooltipFitRight = wWindow - (leftTarget + wTarget) > wideTooltip;
-  const tooltipFitLeft = leftTarget > wideTooltip;
+  const tooltipFitRight = wWindow - (targetLeft + targetWidth) > tooltipTotalWidth;
+  const tooltipFitLeft = targetLeft > tooltipTotalWidth;
 
   if (tooltipFitRight) {
-    left = leftTarget + wTarget + spotPadding + tooltipGap;
+    left = targetLeft + targetWidth + tooltipGap;
 
     // align bottom
-    if (hWindow - topTarget - highTarget < highTooltip - highTarget) {
-      top = topTarget + highTarget - hTooltip;
+    if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
+      top = targetTop + targetHeight - tooltipHeight;
+      arrow.dataset.position = 'down-right';
       // align top
     } else {
-      top = topTarget - spotPadding;
+      top = targetTop;
+      arrow.dataset.position = 'up-right';
     }
 
     Object.assign(tooltip.style, {
-      left: `${left}px`,
-      top: `${top}px`,
+      left: `${left + xOffset}px`,
+      top: `${top + yOffset}px`,
     });
     return;
   }
 
   if (tooltipFitLeft) {
-    left = leftTarget - wideTooltip - spotPadding;
+    left = targetLeft - tooltipTotalWidth;
 
     // align bottom
-    if (hWindow - topTarget - highTarget < highTooltip - highTarget) {
-      top = topTarget + highTarget - hTooltip;
+    if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
+      top = targetTop + targetHeight - tooltipHeight;
+      arrow.dataset.position = 'down-left';
       // align top
     } else {
-      top = topTarget - spotPadding;
+      top = targetTop;
+      arrow.dataset.position = 'up-left';
     }
     Object.assign(tooltip.style, {
-      left: `${left}px`,
-      top: `${top}px`,
+      left: `${left + xOffset}px`,
+      top: `${top + yOffset}px`,
     });
     return;
   }
 
-  const tooltipFitTop = highTooltip < topTarget - tooltipGap;
-  const tooltipFitBottom = hWindow - (topTarget + highTarget) > highTooltip;
+  const tooltipFitTop = tooltipTotalHeight < targetTop - tooltipGap;
+  const tooltipFitBottom = hWindow - (targetTop + targetHeight) > tooltipTotalHeight;
 
   if (tooltipFitTop) {
+    arrow.dataset.position = 'bottom';
     Object.assign(tooltip.style, {
-      left: `${leftTarget - spotPadding}px`,
-      top: `${topTarget - spotPadding - highTooltip}px`,
+      left: `${targetLeft + xOffset}px`,
+      top: `${targetTop - tooltipTotalHeight + yOffset}px`,
     });
     return;
   }
 
   if (tooltipFitBottom) {
+    arrow.dataset.position = 'top';
     Object.assign(tooltip.style, {
-      left: `${leftTarget - spotPadding}px`,
-      top: `${topTarget + highTarget + spotPadding}px`,
+      left: `${targetLeft + xOffset}px`,
+      top: `${targetTop + targetHeight + tooltipGap + yOffset}px`,
     });
     return;
   }
 
   // tooltip in element
+  arrow.dataset.position = 'hidden';
   Object.assign(tooltip.style, {
-    left: `${leftTarget + wTarget - wToolTip}px`,
-    top: `${topTarget + highTarget - hTooltip - spotPadding}px`,
+    left: `${targetLeft + targetWidth - tooltipWidth + xOffset}px`,
+    top: `${targetTop + targetHeight - tooltipHeight + yOffset}px`,
   });
 }
 
-export { scrollToTarget, setSpotlightPosition, setTooltipPosition };
+export { scrollToTarget, setTooltipPosition };
