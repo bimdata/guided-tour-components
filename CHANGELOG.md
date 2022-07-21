@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/bimdata/guided-tour-components/compare/v1.0.1...v1.0.2) (2022-07-21)
+
+
+### PATCH
+
+* fix useless dependencies ([5707a47](https://github.com/bimdata/guided-tour-components/commit/5707a47a1b1a4bc4c339604893fd989776ff3230))
+
 ## [1.0.1](https://github.com/bimdata/guided-tour-components/compare/v1.0.0...v1.0.1) (2022-07-21)
 
 
