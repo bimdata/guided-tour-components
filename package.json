@@ -1,6 +1,6 @@
 {
   "name": "@bimdata/guided-tour-components",
-  "version": "1.0.1-rc.1",
+  "version": "1.0.1-rc.2",
   "files": [
     "dist",
     "vue-plugin.js"
