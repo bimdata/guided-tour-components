@@ -9,7 +9,7 @@
     width: 340px;
     height: 340px;
     background-color: white;
-    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.5);
+    box-shadow: var(--box-shadow);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -129,34 +129,34 @@
       width: 25px;
       height: 25px;
       transform: rotate(45deg);
-      box-shadow: 5px 3px 0.9em, 0 0 rgba(0,0,0,0.5);
+      box-shadow: var(--box-shadow);
 
       &[data-position=bottom] {
         left: 0;
         right: 0;
         top: unset;
-        bottom: calc(100% - var(--spacing-unit));
-        background-color: var(--color-silver-light);
+        bottom: calc(var(--spacing-unit) / -1);
+        background-color: var(--color-white);
       }
 
       &[data-position=top] {
         left: 0;
         right: 0;
-        top: unset;
-        bottom: var(--spacing-unit);
-        background-color: var(--color-white);
+        top: calc(var(--spacing-unit) / -1);
+        bottom: unset;
+        background-color: var(--color-silver-light);
       }
       
       &[data-position=up-left] {
         left: unset;
-        right: calc(0px - var(--spacing-unit));
+        right: calc(var(--spacing-unit) / -1);
         top: -176px;
         bottom: 0;
         background-color: var(--color-silver-light);
       }
 
       &[data-position=up-right] {
-        left: calc(0px - var(--spacing-unit));
+        left: calc(var(--spacing-unit) / -1);
         right: unset;
         top: -176px;
         bottom: 0;
@@ -165,7 +165,7 @@
 
       &[data-position=down-left] {
         left: unset;
-        right: calc(0px - var(--spacing-unit));
+        right: calc(var(--spacing-unit) / -1);
         top: 150px;
         bottom: 0px;
         background-color: var(--color-white);

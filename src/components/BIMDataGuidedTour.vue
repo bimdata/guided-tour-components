@@ -18,7 +18,6 @@
       <div
         ref="arrow"
         class="arrow"
-        data-postion="bottom"
       ></div>
       <div class="tooltip__box">
         <div class="tooltip__box__top">

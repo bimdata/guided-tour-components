@@ -3,7 +3,7 @@
  */
 
 // Tooltip gap (in px)
-const tooltipGap = 40;
+const tooltipGap = 25;
 
 /**
  * Internal utility functions
@@ -158,7 +158,7 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   const tooltipFitBottom = hWindow - (targetTop + targetHeight) > tooltipTotalHeight;
 
   if (tooltipFitTop) {
-    arrow.dataset.position = 'top';
+    arrow.dataset.position = 'bottom';
     Object.assign(tooltip.style, {
       left: `${targetLeft + xOffset}px`,
       top: `${targetTop - tooltipTotalHeight + yOffset}px`,
@@ -167,7 +167,7 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
   }
 
   if (tooltipFitBottom) {
-    arrow.dataset.position = 'bottom';
+    arrow.dataset.position = 'top';
     Object.assign(tooltip.style, {
       left: `${targetLeft + xOffset}px`,
       top: `${targetTop + targetHeight + tooltipGap + yOffset}px`,
