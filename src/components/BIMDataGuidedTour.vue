@@ -6,9 +6,6 @@
     :style="`z-index: ${zIndex}`"
     v-show="showGuidedTour"
   >
-    <div v-show="showSpotlight" ref="spotlight" class="spotlight">
-      <!-- Spotlight div -->
-    </div>
     <div
       v-if="currentStep"
       ref="tooltip"
@@ -18,57 +15,47 @@
         transition: `opacity ${transitionDuration}s ease-in-out`,
       }"
     >
-      <div class="tooltip__progress-bar">
-        <div
-          class="tooltip__progress-bar__step"
-          v-for="(step, index) of steps"
-          :key="index"
-          :style="{
+      <div
+        ref="arrow"
+        class="arrow"
+      ></div>
+      <div class="tooltip__box">
+        <div class="tooltip__box__top">
+          <div
+            class="tooltip__box__top__image"
+            :style="{
+                background: `var(--platform-background) url(${currentStep.props.img}) no-repeat ${currentStep.props.imgPosition} / ${currentStep.props.imgSize}`,
+              }"
+          />
+        </div>
+        <div class="tooltip__box__progress-bar">
+          <div
+            class="tooltip__progress-bar__step"
+            v-for="(step, index) of steps"
+            :key="index"
+            :style="{
             width: `calc(100% / ${steps.length})`,
             backgroundColor:
               steps.indexOf(currentStep) >= index
                 ? 'var(--color-secondary)'
                 : '',
           }"
-        ></div>
-      </div>
-      <div class="tooltip__box">
-        <div class="tooltip__box__header">
-          <template v-if="!isStepIntro && !isStepOutro">
-            <BIMDataButton
-              class="tooltip__box__header__btn-close"
-              width="0px"
-              height="0px"
-              ghost
-              rounded
-              icon
-              @click="close"
-            >
-              <BIMDataIcon name="close" size="xxs" />
-            </BIMDataButton>
-          </template>
+          ></div>
         </div>
-        <div class="tooltip__box__content">
-          <template v-if="currentStep.layout">
-            <component :is="currentStep.layout" v-bind="currentStep.props" />
-          </template>
-          <template v-else>
-            <div class="tooltip__box__content__title">
-              {{ currentStep.props.title }}
-            </div>
-            <div
-              class="tooltip__box__content__image"
-              :style="{
-                background: `var(--color-silver-light) url(${currentStep.props.img}) no-repeat ${currentStep.props.imgPosition} / ${currentStep.props.imgSize}`,
-              }"
-            />
-            <div class="tooltip__box__content__text">
-              {{ currentStep.props.content }}
-            </div>
-          </template>
+        <div class="tooltip__box__bottom">
+          <div class="tooltip__box__bottom__title">
+            {{ currentStep.props.title }}
+          </div>
+          <div class="tooltip__box__bottom__text">
+            {{ currentStep.props.content }}
+          </div>
         </div>
         <div class="tooltip__box__footer">
-          <template v-if="isStepIntro">
+          <div class="tooltip__box__footer__step-counter">
+            <span>{{ stepIndex + 1 }}</span>
+            <span>/{{ steps.length }}</span>
+          </div>
+          <template v-if="!isStepOutro">
             <div class="tooltip__box__footer__btn-skip">
               <BIMDataButton
                 width="0px"
@@ -83,10 +70,6 @@
           <template v-else>
             <div class="tooltip__box__footer__ghost-element"></div>
           </template>
-          <div class="tooltip__box__footer__step-counter">
-            <span>{{ stepIndex + 1 }}</span>
-            <span>/{{ steps.length }}</span>
-          </div>
           <template v-if="isStepOutro">
             <div class="tooltip__box__footer__btn-start">
               <BIMDataButton
@@ -109,7 +92,13 @@
                 radius
                 @click="clickNext"
               >
-                <BIMDataIcon name="chevron" size="xxs" fill color="white" />
+                <span> {{translate("next")}}</span>
+                <BIMDataIcon
+                  name="chevron"
+                  size="xxs"
+                  fill
+                  color="white"
+                />
               </BIMDataButton>
             </div>
           </template>
@@ -120,11 +109,7 @@
 </template>
 
 <script>
-import {
-  scrollToTarget,
-  setSpotlightPosition,
-  setTooltipPosition,
-} from "./guided-tour-utils.js";
+import { scrollToTarget, setTooltipPosition } from "./guided-tour-utils.js";
 
 import trads from "./i18n.js";
 
@@ -168,7 +153,6 @@ export default {
       steps: [],
       showGuidedTour: false,
       currentTarget: null,
-      showSpotlight: true,
       showTooltip: false,
       stepIndex: 0,
     };
@@ -212,10 +196,14 @@ export default {
         }
 
         scrollToTarget(this.currentTarget.element, this.elementToObserve);
-        setSpotlightPosition(this.currentTarget.element, this.$refs.spotlight);
-        setTooltipPosition(this.currentTarget.element, this.$refs.tooltip);
+        setTooltipPosition(
+          this.currentTarget.element,
+          this.$refs.tooltip,
+          this.$refs.arrow,
+          step.yOffset,
+          step.xOffset
+        );
 
-        this.showSpotlight = true;
         this.showTooltip = true;
       } catch {
         this.closeGuidedTour();
@@ -226,7 +214,7 @@ export default {
     this.mutationObserver = new MutationObserver(this.handleClickedStep);
   },
   mounted() {
-    const tour = this.tours.find(t => t.name === this.tourToDisplay);
+    const tour = this.tours.find((t) => t.name === this.tourToDisplay);
     if (tour) {
       this.openGuidedTour(tour.steps);
     } else {
@@ -253,7 +241,7 @@ export default {
       }, this.transitionDuration * 1000);
     },
     openGuidedTour(arg) {
-      this.steps = arg.map(step => {
+      this.steps = arg.map((step) => {
         return {
           ...step,
           layout: step.layout ? Object.freeze(step.layout) : null,
@@ -267,7 +255,7 @@ export default {
       let element, elementToClick;
 
       if (Array.isArray(target)) {
-        element = target.map(t =>
+        element = target.map((t) =>
           elementToWatch.querySelector(`[data-guide=${t}]`)
         );
       } else if (typeof target === "string") {
@@ -302,7 +290,6 @@ export default {
       this.$emit("set-completed-tour", this.tourToDisplay);
     },
     resetSettings() {
-      this.showSpotlight = this.currentStep.clickable ? false : true;
       this.showTooltip = false;
     },
     clickListener() {
@@ -332,7 +319,7 @@ export default {
       const isAnHTMLElement = element instanceof HTMLElement;
       const isAnArrayOfHTMLElement =
         Array.isArray(element) &&
-        element.every(elem => elem instanceof HTMLElement);
+        element.every((elem) => elem instanceof HTMLElement);
 
       if (isAnHTMLElement || isAnArrayOfHTMLElement) {
         this.next();
