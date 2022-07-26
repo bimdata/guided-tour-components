@@ -134,8 +134,7 @@
       &[data-position=bottom] {
         left: 0;
         right: 0;
-        top: unset;
-        bottom: calc(var(--spacing-unit) * -1);
+        top: 328px;
         background-color: var(--color-white);
       }
 
@@ -143,39 +142,34 @@
         left: 0;
         right: 0;
         top: calc(var(--spacing-unit) * -1);
-        bottom: unset;
         background-color: var(--color-silver-light);
       }
-      
+
       &[data-position=up-left] {
         left: unset;
         right: calc(var(--spacing-unit) * -1);
-        top: -176px;
-        bottom: 0;
+        top: 65px;
         background-color: var(--color-silver-light);
       }
 
       &[data-position=up-right] {
         left: calc(var(--spacing-unit) * -1);
         right: unset;
-        top: -176px;
-        bottom: 0;
+        top: 65px;
         background-color: var(--color-silver-light);
       }
 
       &[data-position=down-left] {
         left: unset;
         right: calc(var(--spacing-unit) * -1);
-        top: 150px;
-        bottom: 0px;
+        top: 237px;
         background-color: var(--color-white);
       }
 
       &[data-position=down-right] {
-        left: -12px;
+        left: calc(var(--spacing-unit) * -1);
         right: unset;
-        top: 150px;
-        bottom: 0px;
+        top: 237px;
         background-color: var(--color-white);
       }
 

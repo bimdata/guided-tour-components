@@ -102,9 +102,14 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
 
   const { w: tooltipWidth, h: tooltipHeight } = getElementCoord(tooltip);
   const { wWindow, hWindow } = getWindowSize();
+
+  const tooltipTop = tooltip.getElementsByClassName('tooltip__box__top')[0];
+  const { h: tooltipTopHeight } = getElementCoord(tooltipTop);
+
   const { offsetXWindow, offsetYWindow } = getWindowScroll();
 
   let left, top;
+  let adjustTop = 0;
 
   const targetLeft = offsetXWindow + xTarget;
   const tooltipTotalWidth = tooltipWidth + tooltipGap;
@@ -120,11 +125,17 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
 
     // align bottom
     if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
-      top = targetTop + targetHeight - tooltipHeight;
+      if (targetHeight < tooltipTopHeight) {
+        adjustTop = tooltipTopHeight / 2 + targetHeight / -2;
+      }
+      top = targetTop + targetHeight - tooltipHeight + adjustTop;
       arrow.dataset.position = 'down-right';
       // align top
     } else {
-      top = targetTop;
+      if (targetHeight < tooltipTopHeight) {
+        adjustTop = tooltipTopHeight / -2 + targetHeight / 2;
+      }
+      top = targetTop + adjustTop;
       arrow.dataset.position = 'up-right';
     }
 
@@ -140,11 +151,17 @@ function setTooltipPosition(target, tooltip, arrow, yOffset = 0, xOffset = 0) {
 
     // align bottom
     if (hWindow - targetTop - targetHeight < tooltipTotalHeight - targetHeight) {
-      top = targetTop + targetHeight - tooltipHeight;
+      if (targetHeight < tooltipTopHeight) {
+        adjustTop = tooltipTopHeight / 2 + targetHeight / -2;
+      }
+      top = targetTop + targetHeight - tooltipHeight + adjustTop;
       arrow.dataset.position = 'down-left';
       // align top
     } else {
-      top = targetTop;
+      if (targetHeight < tooltipTopHeight) {
+        adjustTop = tooltipTopHeight / -2 + targetHeight / 2;
+      }
+      top = targetTop + adjustTop;
       arrow.dataset.position = 'up-left';
     }
     Object.assign(tooltip.style, {
