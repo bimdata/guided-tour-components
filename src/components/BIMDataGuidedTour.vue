@@ -191,6 +191,17 @@ export default {
           return;
         }
 
+        if (step.actions) {
+          step.actions?.projectTabSetter(
+            parseInt(
+              document
+                .querySelector("[data-guide-click=dashboard-project]")
+                .getAttribute("data-guide-projectid"),
+              10
+            )
+          );
+        }
+
         if (step.clickable) {
           this.clickListener();
         }
