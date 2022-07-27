@@ -192,7 +192,7 @@ export default {
         }
 
         if (step.actions) {
-          step.actions?.projectTabSetter(
+          step.actions?.projectViewSetter(
             parseInt(
               document
                 .querySelector("[data-guide-click=dashboard-project]")
