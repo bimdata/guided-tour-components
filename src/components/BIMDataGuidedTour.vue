@@ -191,16 +191,9 @@ export default {
           return;
         }
 
-        if (step.actions) {
-          step.actions?.projectViewSetter(
-            parseInt(
-              document
-                .querySelector("[data-guide-click=dashboard-project]")
-                .getAttribute("data-guide-projectid"),
-              10
-            )
-          );
-        }
+        step.action?.(
+          this.currentTarget.element.getAttribute("data-guide-param")
+        );
 
         if (step.clickable) {
           this.clickListener();
