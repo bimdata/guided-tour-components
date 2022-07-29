@@ -191,6 +191,10 @@ export default {
           return;
         }
 
+        step.action?.(
+          this.currentTarget.element.getAttribute("data-guide-param")
+        );
+
         if (step.clickable) {
           this.clickListener();
         }
