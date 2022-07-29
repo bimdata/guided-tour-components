@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/bimdata/guided-tour-components/compare/v1.0.2...v1.0.3) (2022-07-29)
+
+
+### PATCH
+
+* property actions ([1dc8db3](https://github.com/bimdata/guided-tour-components/commit/1dc8db31d8d4611c8da25e87f6d309e8e5cde3fc))
+
 ## [1.0.2](https://github.com/bimdata/guided-tour-components/compare/v1.0.1...v1.0.2) (2022-07-21)
 
 
