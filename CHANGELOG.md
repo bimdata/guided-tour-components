@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/bimdata/guided-tour-components/compare/v1.0.3...v1.0.4) (2023-08-11)
+
+
+### PATCH
+
+* Merge pull request #4 from bimdata/fix/use-standalone-icons ([e61c71e](https://github.com/bimdata/guided-tour-components/commit/e61c71ef81d6d4272233e1fbeb7fcf398d059371)), closes [#4](https://github.com/bimdata/guided-tour-components/issues/4)
+
 ## [1.0.3](https://github.com/bimdata/guided-tour-components/compare/v1.0.2...v1.0.3) (2022-07-29)
 
 
