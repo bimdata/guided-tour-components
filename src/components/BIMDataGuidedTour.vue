@@ -93,8 +93,7 @@
                 @click="clickNext"
               >
                 <span> {{translate("next")}}</span>
-                <BIMDataIcon
-                  name="chevron"
+                <BIMDataIconChevron
                   size="xxs"
                   fill
                   color="white"
@@ -113,13 +112,13 @@ import { scrollToTarget, setTooltipPosition } from "./guided-tour-utils.js";
 
 import trads from "./i18n.js";
 
-import BIMDataButton from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/BIMDataButton.js";
-import BIMDataIcon from "@bimdata/design-system/dist/js/BIMDataComponents/vue3/BIMDataIcon.js";
+import BIMDataButton from "@bimdata/design-system/src/BIMDataComponents/BIMDataButton/BIMDataButton.vue";
+import BIMDataIconChevron from "@bimdata/design-system/src/BIMDataComponents/BIMDataIcon/BIMDataIconStandalone/BIMDataIconChevron.vue";
 
 export default {
   components: {
     BIMDataButton,
-    BIMDataIcon,
+    BIMDataIconChevron,
   },
   props: {
     locale: {

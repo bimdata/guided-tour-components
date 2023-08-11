@@ -15,7 +15,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@bimdata/design-system": "^1.4.0-rc.21",
+    "@bimdata/design-system": "^2.0.0-rc.29",
     "@vitejs/plugin-vue": "^2.3.3",
     "sass": "^1.52.1",
     "vite": "^2.9.9",
